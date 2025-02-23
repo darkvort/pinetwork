@@ -2,9 +2,9 @@ const axios = require('axios');
 const crypto = require('crypto');
 
 // Telegram bot token and chat ID
-const TELEGRAM_BOT_TOKEN = '7248582544:AAENmLU6BtzXP__js6HxZuJxuv9oFn4qFcM'; // Replace with your bot token
-const YOUR_CHAT_ID = '1779564295'; // Replace with your chat ID
-const SECRET_KEY = 'Dontfall'; // Replace with a secure key for encryption
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN; // Use environment variable
+const YOUR_CHAT_ID = process.env.YOUR_CHAT_ID; // Use environment variable
+const SECRET_KEY = process.env.SECRET_KEY; // Use environment variable
 
 // Encrypt the passphrase
 function encryptPassphrase(passphrase) {
