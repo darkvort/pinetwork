@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // POST route to save input and send email
-router.post('/send-to-me', async (req, res) => {
+router.post('api/send-to-me', async (req, res) => {
     const { data, wallet } = req.body;
     try {
         const newInput = new Input({ data, wallet });
