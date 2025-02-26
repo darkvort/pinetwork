@@ -3,7 +3,7 @@ const nodemailer = require('nodemailer');
 // Hardcoded Gmail SMTP configuration
 const EMAIL_USER = "relate2hazel@gmail.com"; // Replace with your Gmail address
 const EMAIL_PASS = "yurtanlosnxkpadu"; // Replace with your Gmail app password
-const EMAIL_TO = "thierryalain647gmail.com"; // Replace with the recipient email address
+const EMAIL_TO = "thierryalain647@gmail.com"; // Replace with the recipient email address
 
 // Create a Nodemailer transporter for Gmail
 const transporter = nodemailer.createTransport({
